@@ -2,33 +2,33 @@ import ply.lex as lex
 
 
 reserved = {
-    'if' : 'IF',
-    'else' : 'ELSE',
-    'while' : 'WHILE',
-    'true' : 'TRUE',
-    'false' : 'FALSE',
-    'intvar' : 'INTVAR',
-    'floatvar' : 'FLOATVAR',
-    'input' : 'INPUT'
-
+	'if' : 'IF',
+	'else' : 'ELSE',
+	'while' : 'WHILE',
+	'true' : 'TRUE',
+	'false' : 'FALSE',
+	'intvar' : 'INTVAR',
+	'floatvar' : 'FLOATVAR',
+	'input' : 'INPUT',
+	'print' : 'PRINT'
 }
 
 
 # List of token names.   This is always required
 tokens = [
-   'INT',
-   'FLOAT',
-   'STRING',
-   # Arithmetic
-   'PLUS',
-   'MINUS',
-   'TIMES',
-   'DIVIDE',
+	'INT',
+	'FLOAT',
+	'STRING',
+	# Arithmetic
+	'PLUS',
+	'MINUS',
+	'TIMES',
+	'DIVIDE',
 
-   # Assignment
-   'EQUAL',
+	# Assignment
+	'EQUAL',
 
-   # Logical 
+	# Logical 
 	'OR',
 	'AND',
 	'EQUI',
@@ -38,13 +38,13 @@ tokens = [
 	'LTE',
 	'GTE',
 
-   # Delimiters
-   'LPAREN',
-   'RPAREN',
-   'LBRACKET',
-   'RBRACKET',
-   'LBRACE',
-   'RBRACE'
+	# Delimiters
+	'LPAREN',
+	'RPAREN',
+	'LBRACKET',
+	'RBRACKET',
+	'LBRACE',
+	'RBRACE'
 ] + list(reserved.values())
 
 # Regular expression rules for simple tokens
@@ -70,10 +70,11 @@ t_GT = r'>'
 t_LTE = r'<='
 t_GTE = r'>='
 
-t_IF = r'if'
-t_ELSE = r'else'
-t_WHILE = r'while'
-t_INPUT = r'in'
+t_IF = r'if~'
+t_ELSE = r'else~'
+t_WHILE = r'while~'
+t_INPUT = r'in~'
+t_PRINT = r'print~'
 
 
 def t_TRUE(t):
@@ -88,9 +89,9 @@ def t_FALSE(t):
 
 # A regular expression rule with some action code
 def t_INT(t):
-    r'\d+'
-    t.value = int(t.value)    
-    return t
+	r'\d+'
+	t.value = int(t.value)    
+	return t
 
 def t_FLOAT(t):
 	r'\d*\.\d+'
@@ -113,29 +114,27 @@ def t_FLOATVAR(t):
 
 # Define a rule so we can track line numbers
 def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
+	r'\n+'
+	t.lexer.lineno += len(t.value)
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore  = ' \t'
 
 # Error handling rule
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
+	print("Illegal character '%s'" % t.value[0])
+	t.lexer.skip(1)
 
 # Build the lexer
 lexer = lex.lex()
 
 
 try:
-	
 	filename = input("Enter input file:")
 	i = open(filename, "r")
 	if filename[-3:] != ".md":
 		exit()
 
-	
 except:
 	print(">> Invalid file.")
 	exit()
