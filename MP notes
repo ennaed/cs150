@@ -1,0 +1,7 @@
+Notes:
+
+- strings should be enclosed by ~, can have number and spaces ex: ~sample~
+- variables:
+	strings- ss_~
+	int	- ii_~ 
+	float - ff_~
