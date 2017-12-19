@@ -1,0 +1,376 @@
+Created by PLY version 3.10 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    STRING
+    OR
+    AND
+    EQUI
+    NEQUI
+    LT
+    GT
+    LTE
+    GTE
+    LPAREN
+    RPAREN
+    LBRACKET
+    RBRACKET
+    LBRACE
+    RBRACE
+    COMMENT
+    IF
+    ELSE
+    WHILE
+    TRUE
+    FALSE
+    FLOATVAR
+    INPUT
+    PRINT
+
+Grammar
+
+Rule 0     S' -> arithmetic
+Rule 1     arithmetic -> expression
+Rule 2     arithmetic -> var_assign
+Rule 3     arithmetic -> empty
+Rule 4     var_assign -> INTVAR EQUAL expression
+Rule 5     expression -> expression TIMES expression
+Rule 6     expression -> expression DIVIDE expression
+Rule 7     expression -> expression PLUS expression
+Rule 8     expression -> expression MINUS expression
+Rule 9     expression -> INT
+Rule 10    expression -> FLOAT
+Rule 11    expression -> INTVAR
+Rule 12    empty -> <empty>
+
+Terminals, with rules where they appear
+
+AND                  : 
+COMMENT              : 
+DIVIDE               : 6
+ELSE                 : 
+EQUAL                : 4
+EQUI                 : 
+FALSE                : 
+FLOAT                : 10
+FLOATVAR             : 
+GT                   : 
+GTE                  : 
+IF                   : 
+INPUT                : 
+INT                  : 9
+INTVAR               : 4 11
+LBRACE               : 
+LBRACKET             : 
+LPAREN               : 
+LT                   : 
+LTE                  : 
+MINUS                : 8
+NEQUI                : 
+OR                   : 
+PLUS                 : 7
+PRINT                : 
+RBRACE               : 
+RBRACKET             : 
+RPAREN               : 
+STRING               : 
+TIMES                : 5
+TRUE                 : 
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+arithmetic           : 0
+empty                : 3
+expression           : 1 4 5 5 6 6 7 7 8 8
+var_assign           : 2
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . arithmetic
+    (1) arithmetic -> . expression
+    (2) arithmetic -> . var_assign
+    (3) arithmetic -> . empty
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . expression PLUS expression
+    (8) expression -> . expression MINUS expression
+    (9) expression -> . INT
+    (10) expression -> . FLOAT
+    (11) expression -> . INTVAR
+    (4) var_assign -> . INTVAR EQUAL expression
+    (12) empty -> .
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    INTVAR          shift and go to state 7
+    $end            reduce using rule 12 (empty -> .)
+
+    arithmetic                     shift and go to state 1
+    expression                     shift and go to state 2
+    var_assign                     shift and go to state 3
+    empty                          shift and go to state 4
+
+state 1
+
+    (0) S' -> arithmetic .
+
+
+
+state 2
+
+    (1) arithmetic -> expression .
+    (5) expression -> expression . TIMES expression
+    (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . PLUS expression
+    (8) expression -> expression . MINUS expression
+
+    $end            reduce using rule 1 (arithmetic -> expression .)
+    TIMES           shift and go to state 8
+    DIVIDE          shift and go to state 9
+    PLUS            shift and go to state 10
+    MINUS           shift and go to state 11
+
+
+state 3
+
+    (2) arithmetic -> var_assign .
+
+    $end            reduce using rule 2 (arithmetic -> var_assign .)
+
+
+state 4
+
+    (3) arithmetic -> empty .
+
+    $end            reduce using rule 3 (arithmetic -> empty .)
+
+
+state 5
+
+    (9) expression -> INT .
+
+    TIMES           reduce using rule 9 (expression -> INT .)
+    DIVIDE          reduce using rule 9 (expression -> INT .)
+    PLUS            reduce using rule 9 (expression -> INT .)
+    MINUS           reduce using rule 9 (expression -> INT .)
+    $end            reduce using rule 9 (expression -> INT .)
+
+
+state 6
+
+    (10) expression -> FLOAT .
+
+    TIMES           reduce using rule 10 (expression -> FLOAT .)
+    DIVIDE          reduce using rule 10 (expression -> FLOAT .)
+    PLUS            reduce using rule 10 (expression -> FLOAT .)
+    MINUS           reduce using rule 10 (expression -> FLOAT .)
+    $end            reduce using rule 10 (expression -> FLOAT .)
+
+
+state 7
+
+    (11) expression -> INTVAR .
+    (4) var_assign -> INTVAR . EQUAL expression
+
+    TIMES           reduce using rule 11 (expression -> INTVAR .)
+    DIVIDE          reduce using rule 11 (expression -> INTVAR .)
+    PLUS            reduce using rule 11 (expression -> INTVAR .)
+    MINUS           reduce using rule 11 (expression -> INTVAR .)
+    $end            reduce using rule 11 (expression -> INTVAR .)
+    EQUAL           shift and go to state 12
+
+
+state 8
+
+    (5) expression -> expression TIMES . expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . expression PLUS expression
+    (8) expression -> . expression MINUS expression
+    (9) expression -> . INT
+    (10) expression -> . FLOAT
+    (11) expression -> . INTVAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    INTVAR          shift and go to state 14
+
+    expression                     shift and go to state 13
+
+state 9
+
+    (6) expression -> expression DIVIDE . expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . expression PLUS expression
+    (8) expression -> . expression MINUS expression
+    (9) expression -> . INT
+    (10) expression -> . FLOAT
+    (11) expression -> . INTVAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    INTVAR          shift and go to state 14
+
+    expression                     shift and go to state 15
+
+state 10
+
+    (7) expression -> expression PLUS . expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . expression PLUS expression
+    (8) expression -> . expression MINUS expression
+    (9) expression -> . INT
+    (10) expression -> . FLOAT
+    (11) expression -> . INTVAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    INTVAR          shift and go to state 14
+
+    expression                     shift and go to state 16
+
+state 11
+
+    (8) expression -> expression MINUS . expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . expression PLUS expression
+    (8) expression -> . expression MINUS expression
+    (9) expression -> . INT
+    (10) expression -> . FLOAT
+    (11) expression -> . INTVAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    INTVAR          shift and go to state 14
+
+    expression                     shift and go to state 17
+
+state 12
+
+    (4) var_assign -> INTVAR EQUAL . expression
+    (5) expression -> . expression TIMES expression
+    (6) expression -> . expression DIVIDE expression
+    (7) expression -> . expression PLUS expression
+    (8) expression -> . expression MINUS expression
+    (9) expression -> . INT
+    (10) expression -> . FLOAT
+    (11) expression -> . INTVAR
+
+    INT             shift and go to state 5
+    FLOAT           shift and go to state 6
+    INTVAR          shift and go to state 14
+
+    expression                     shift and go to state 18
+
+state 13
+
+    (5) expression -> expression TIMES expression .
+    (5) expression -> expression . TIMES expression
+    (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . PLUS expression
+    (8) expression -> expression . MINUS expression
+
+    TIMES           reduce using rule 5 (expression -> expression TIMES expression .)
+    DIVIDE          reduce using rule 5 (expression -> expression TIMES expression .)
+    PLUS            reduce using rule 5 (expression -> expression TIMES expression .)
+    MINUS           reduce using rule 5 (expression -> expression TIMES expression .)
+    $end            reduce using rule 5 (expression -> expression TIMES expression .)
+
+  ! TIMES           [ shift and go to state 8 ]
+  ! DIVIDE          [ shift and go to state 9 ]
+  ! PLUS            [ shift and go to state 10 ]
+  ! MINUS           [ shift and go to state 11 ]
+
+
+state 14
+
+    (11) expression -> INTVAR .
+
+    TIMES           reduce using rule 11 (expression -> INTVAR .)
+    DIVIDE          reduce using rule 11 (expression -> INTVAR .)
+    PLUS            reduce using rule 11 (expression -> INTVAR .)
+    MINUS           reduce using rule 11 (expression -> INTVAR .)
+    $end            reduce using rule 11 (expression -> INTVAR .)
+
+
+state 15
+
+    (6) expression -> expression DIVIDE expression .
+    (5) expression -> expression . TIMES expression
+    (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . PLUS expression
+    (8) expression -> expression . MINUS expression
+
+    TIMES           reduce using rule 6 (expression -> expression DIVIDE expression .)
+    DIVIDE          reduce using rule 6 (expression -> expression DIVIDE expression .)
+    PLUS            reduce using rule 6 (expression -> expression DIVIDE expression .)
+    MINUS           reduce using rule 6 (expression -> expression DIVIDE expression .)
+    $end            reduce using rule 6 (expression -> expression DIVIDE expression .)
+
+  ! TIMES           [ shift and go to state 8 ]
+  ! DIVIDE          [ shift and go to state 9 ]
+  ! PLUS            [ shift and go to state 10 ]
+  ! MINUS           [ shift and go to state 11 ]
+
+
+state 16
+
+    (7) expression -> expression PLUS expression .
+    (5) expression -> expression . TIMES expression
+    (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . PLUS expression
+    (8) expression -> expression . MINUS expression
+
+    PLUS            reduce using rule 7 (expression -> expression PLUS expression .)
+    MINUS           reduce using rule 7 (expression -> expression PLUS expression .)
+    $end            reduce using rule 7 (expression -> expression PLUS expression .)
+    TIMES           shift and go to state 8
+    DIVIDE          shift and go to state 9
+
+  ! TIMES           [ reduce using rule 7 (expression -> expression PLUS expression .) ]
+  ! DIVIDE          [ reduce using rule 7 (expression -> expression PLUS expression .) ]
+  ! PLUS            [ shift and go to state 10 ]
+  ! MINUS           [ shift and go to state 11 ]
+
+
+state 17
+
+    (8) expression -> expression MINUS expression .
+    (5) expression -> expression . TIMES expression
+    (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . PLUS expression
+    (8) expression -> expression . MINUS expression
+
+    PLUS            reduce using rule 8 (expression -> expression MINUS expression .)
+    MINUS           reduce using rule 8 (expression -> expression MINUS expression .)
+    $end            reduce using rule 8 (expression -> expression MINUS expression .)
+    TIMES           shift and go to state 8
+    DIVIDE          shift and go to state 9
+
+  ! TIMES           [ reduce using rule 8 (expression -> expression MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 8 (expression -> expression MINUS expression .) ]
+  ! PLUS            [ shift and go to state 10 ]
+  ! MINUS           [ shift and go to state 11 ]
+
+
+state 18
+
+    (4) var_assign -> INTVAR EQUAL expression .
+    (5) expression -> expression . TIMES expression
+    (6) expression -> expression . DIVIDE expression
+    (7) expression -> expression . PLUS expression
+    (8) expression -> expression . MINUS expression
+
+    $end            reduce using rule 4 (var_assign -> INTVAR EQUAL expression .)
+    TIMES           shift and go to state 8
+    DIVIDE          shift and go to state 9
+    PLUS            shift and go to state 10
+    MINUS           shift and go to state 11
+

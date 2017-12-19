@@ -1,5 +1,27 @@
 import ply.lex as lex
+import ply.yacc as yacc
+import sys
 
+variables = {}
+
+def interpret(p):
+    global env
+    if type(p) == tuple:
+        if p[0] == '+':
+            return interpret(p[1]) + interpret(p[2])
+        elif p[0] == '-':
+            return interpret(p[1]) - interpret(p[2])
+        elif p[0] == '*':
+            return interpret(p[1]) * interpret(p[2])
+        elif p[0] == '/':
+            return interpret(p[1]) / interpret(p[2])
+        elif p[0] == '=': # Assignment of variables
+            variables[p[1]] = interpret(p[2]) # ii~a = 2 is the same as (=, ii~a, 2) where p[1] is ii~a, p[2] is 2
+            #print(variables)
+        elif p[0] == 'var':
+            return variables[p[1]]
+    else:
+        return p
 
 reserved = {
 	'if' : 'IF',
@@ -44,8 +66,15 @@ tokens = [
 	'LBRACKET',
 	'RBRACKET',
 	'LBRACE',
-	'RBRACE'
+	'RBRACE',
+	'COMMENT'
 ] + list(reserved.values())
+
+precedence = (
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE'),
+
+)
 
 # Regular expression rules for simple tokens
 t_PLUS    = r'\+'
@@ -75,7 +104,7 @@ t_ELSE = r'else~'
 t_WHILE = r'while~'
 t_INPUT = r'in~'
 t_PRINT = r'print~'
-
+t_ignore_COMMENT = r'\#.*'
 
 def t_TRUE(t):
 	r'true'
@@ -105,8 +134,8 @@ def t_STRING(t):
 
 # Variables
 def t_INTVAR(t):
-    r'[i]{2}\~[A-Za-z]+[A-Za-z]*'
-    return t
+	r'[i]{2}\~[A-Za-z]+[A-Za-z]*'
+	return t
 
 def t_FLOATVAR(t):
 	r'[f]{2}\~[A-Za-z]+[A-Za-z]*'
@@ -128,23 +157,87 @@ def t_error(t):
 # Build the lexer
 lexer = lex.lex()
 
+def p_arithmetic(p):
+    '''
+    arithmetic  : expression
+          | var_assign
+          | empty
+    '''
 
-try:
-	filename = input("Enter input file:")
-	i = open(filename, "r")
-	if filename[-3:] != ".md":
-		exit()
+    print(interpret(p[1])) 
 
-except:
-	print(">> Invalid file.")
-	exit()
+def p_var_assign(p):
+    '''
+    var_assign : INTVAR EQUAL expression
+    '''
+    p[0] = ('=',p[1],p[3])
 
-data = i.read()
-lexer.input(data)
+def p_expression(p):
+	'''
+	expression : expression TIMES expression
+			   | expression DIVIDE expression
+			   | expression PLUS expression
+			   | expression MINUS expression
+	'''
+	p[0] = (p[2],p[1],p[3])
 
-# Tokenize
+def p_expression_int_float(p):
+	'''
+	expression : INT 
+			   | FLOAT
+	'''
+	p[0] = p[1]
+
+def p_expression_var(p):
+    '''
+    expression : INTVAR
+    
+    '''
+    p[0] = ('var',p[1])
+
+def p_empty(p):
+	'''
+	empty :
+	'''
+	p[0] = None
+
+# Error rule for syntax errors
+def p_error(p):
+    print("Syntax error in input!")
+
+# try:
+# 	filename = input("Enter input file:")
+# 	i = open(filename, "r")
+# 	if filename[-3:] != ".md":
+# 		exit()
+
+# except:
+# 	print(">> Invalid file.")
+# 	exit()
+
+
+
+
+
+
+#data = i.read()
+#lexer.input(data)
+parser = yacc.yacc()
+
+
 while True:
-    tok = lexer.token()
-    if not tok: 
-        break      # No more input
-    print(tok)
+	try:
+		data = input('')
+	except EOFError:
+		break
+	parser.parse(data)
+
+lexer.input(data)	
+# Tokenize
+# while True:
+#     tok = lexer.token()
+#     if not tok: 
+#         break      # No more input
+
+    #print(tok)
+#parser.parse(data)

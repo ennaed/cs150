@@ -1,7 +1,15 @@
 Notes:
 
-- strings should be enclosed by ~, can have number and spaces ex: ~sample~
-- variables:
-	strings- ss_~
+- strings should be enclosed by (~), can have number and spaces ex: ~sample~
+
+- variables (no numbers):
+	//strings- ss_~ 
 	int	- ii_~ 
 	float - ff_~
+
+- loops: 
+	if - if~
+	else - else~
+	while - while~
+
+- Comments are made by adding (#) before the comment. Interpreter will ignore all the characters in a line after (#)

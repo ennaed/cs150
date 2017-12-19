@@ -1,5 +1,3 @@
-~test~ = 1 + 1
-ii~test = 2
-ff~test = 2.5
-in~
-if~
+#1 + 2 + 3
+ii~a = 2 
+ii~a + 2
