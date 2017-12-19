@@ -5,9 +5,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDEINT FLOAT STRING PLUS MINUS TIMES DIVIDE EQUAL OR AND EQUI NEQUI LT GT LTE GTE LPAREN RPAREN LBRACKET RBRACKET LBRACE RBRACE COMMENT IF ELSE WHILE TRUE FALSE INTVAR FLOATVAR INPUT PRINT\n    arithmetic  : expression\n          | var_assign\n          | empty\n    \n    var_assign : INTVAR EQUAL expression\n    \n\texpression : expression TIMES expression\n\t\t\t   | expression DIVIDE expression\n\t\t\t   | expression PLUS expression\n\t\t\t   | expression MINUS expression\n\t\n\texpression : INT \n\t\t\t   | FLOAT\n\t\n    expression : INTVAR\n    \n    \n\tempty :\n\t'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDErightEXPMODULOleftANDORleftEQUINEQUIleftGTLTleftGTELTEINT FLOAT STRING PLUS MINUS TIMES DIVIDE MODULO EXP EQUAL OR AND EQUI NEQUI LT GT LTE GTE LPAREN RPAREN LBRACKET RBRACKET LBRACE RBRACE COMMENT NEWLINE IF ELSE WHILE TRUE FALSE INTVAR FLOATVAR INPUT PRINT\n    arithmetic  : expression\n          | var_assign\n          | empty\n    \n    var_assign : INTVAR EQUAL expression \n    \t\t   | FLOATVAR EQUAL expression\n    \n\texpression : expression TIMES expression\n\t\t\t   | expression DIVIDE expression\n\t\t\t   | expression PLUS expression\n\t\t\t   | expression MINUS expression\n\t\n\texpression : INT \n\t\t\t   | FLOAT\n\t\n    expression : INTVAR \n    \t\t   | FLOATVAR\n    \n    \n\tempty :\n\t'
     
-_lr_action_items = {'INT':([0,8,9,10,11,12,],[5,5,5,5,5,5,]),'FLOAT':([0,8,9,10,11,12,],[6,6,6,6,6,6,]),'INTVAR':([0,8,9,10,11,12,],[7,14,14,14,14,14,]),'$end':([0,1,2,3,4,5,6,7,13,14,15,16,17,18,],[-12,0,-1,-2,-3,-9,-10,-11,-5,-11,-6,-7,-8,-4,]),'TIMES':([2,5,6,7,13,14,15,16,17,18,],[8,-9,-10,-11,-5,-11,-6,8,8,8,]),'DIVIDE':([2,5,6,7,13,14,15,16,17,18,],[9,-9,-10,-11,-5,-11,-6,9,9,9,]),'PLUS':([2,5,6,7,13,14,15,16,17,18,],[10,-9,-10,-11,-5,-11,-6,-7,-8,10,]),'MINUS':([2,5,6,7,13,14,15,16,17,18,],[11,-9,-10,-11,-5,-11,-6,-7,-8,11,]),'EQUAL':([7,],[12,]),}
+_lr_action_items = {'INT':([0,9,10,11,12,13,14,],[5,5,5,5,5,5,5,]),'FLOAT':([0,9,10,11,12,13,14,],[6,6,6,6,6,6,6,]),'INTVAR':([0,9,10,11,12,13,14,],[7,16,16,16,16,16,16,]),'FLOATVAR':([0,9,10,11,12,13,14,],[8,17,17,17,17,17,17,]),'$end':([0,1,2,3,4,5,6,7,8,15,16,17,18,19,20,21,22,],[-14,0,-1,-2,-3,-10,-11,-12,-13,-6,-12,-13,-7,-8,-9,-4,-5,]),'TIMES':([2,5,6,7,8,15,16,17,18,19,20,21,22,],[9,-10,-11,-12,-13,-6,-12,-13,-7,9,9,9,9,]),'DIVIDE':([2,5,6,7,8,15,16,17,18,19,20,21,22,],[10,-10,-11,-12,-13,-6,-12,-13,-7,10,10,10,10,]),'PLUS':([2,5,6,7,8,15,16,17,18,19,20,21,22,],[11,-10,-11,-12,-13,-6,-12,-13,-7,-8,-9,11,11,]),'MINUS':([2,5,6,7,8,15,16,17,18,19,20,21,22,],[12,-10,-11,-12,-13,-6,-12,-13,-7,-8,-9,12,12,]),'EQUAL':([7,8,],[13,14,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'arithmetic':([0,],[1,]),'expression':([0,8,9,10,11,12,],[2,13,15,16,17,18,]),'var_assign':([0,],[3,]),'empty':([0,],[4,]),}
+_lr_goto_items = {'arithmetic':([0,],[1,]),'expression':([0,9,10,11,12,13,14,],[2,15,18,19,20,21,22,]),'var_assign':([0,],[3,]),'empty':([0,],[4,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,16 +26,18 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> arithmetic","S'",1,None,None,None),
-  ('arithmetic -> expression','arithmetic',1,'p_arithmetic','mp.py',154),
-  ('arithmetic -> var_assign','arithmetic',1,'p_arithmetic','mp.py',155),
-  ('arithmetic -> empty','arithmetic',1,'p_arithmetic','mp.py',156),
-  ('var_assign -> INTVAR EQUAL expression','var_assign',3,'p_var_assign','mp.py',163),
-  ('expression -> expression TIMES expression','expression',3,'p_expression','mp.py',169),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression','mp.py',170),
-  ('expression -> expression PLUS expression','expression',3,'p_expression','mp.py',171),
-  ('expression -> expression MINUS expression','expression',3,'p_expression','mp.py',172),
-  ('expression -> INT','expression',1,'p_expression_int_float','mp.py',178),
-  ('expression -> FLOAT','expression',1,'p_expression_int_float','mp.py',179),
-  ('expression -> INTVAR','expression',1,'p_expression_var','mp.py',185),
-  ('empty -> <empty>','empty',0,'p_empty','mp.py',192),
+  ('arithmetic -> expression','arithmetic',1,'p_arithmetic','mp.py',174),
+  ('arithmetic -> var_assign','arithmetic',1,'p_arithmetic','mp.py',175),
+  ('arithmetic -> empty','arithmetic',1,'p_arithmetic','mp.py',176),
+  ('var_assign -> INTVAR EQUAL expression','var_assign',3,'p_var_assign','mp.py',183),
+  ('var_assign -> FLOATVAR EQUAL expression','var_assign',3,'p_var_assign','mp.py',184),
+  ('expression -> expression TIMES expression','expression',3,'p_expression','mp.py',190),
+  ('expression -> expression DIVIDE expression','expression',3,'p_expression','mp.py',191),
+  ('expression -> expression PLUS expression','expression',3,'p_expression','mp.py',192),
+  ('expression -> expression MINUS expression','expression',3,'p_expression','mp.py',193),
+  ('expression -> INT','expression',1,'p_expression_int_float','mp.py',199),
+  ('expression -> FLOAT','expression',1,'p_expression_int_float','mp.py',200),
+  ('expression -> INTVAR','expression',1,'p_expression_var','mp.py',206),
+  ('expression -> FLOATVAR','expression',1,'p_expression_var','mp.py',207),
+  ('empty -> <empty>','empty',0,'p_empty','mp.py',214),
 ]

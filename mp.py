@@ -46,6 +46,8 @@ tokens = [
 	'MINUS',
 	'TIMES',
 	'DIVIDE',
+	'MODULO',
+	'EXP',
 
 	# Assignment
 	'EQUAL',
@@ -67,13 +69,18 @@ tokens = [
 	'RBRACKET',
 	'LBRACE',
 	'RBRACE',
-	'COMMENT'
+	'COMMENT',
+	'NEWLINE'
 ] + list(reserved.values())
 
 precedence = (
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
-
+    ('right', 'EXP', 'MODULO'),
+    ('left', 'AND', 'OR'),
+    ('left', 'EQUI', 'NEQUI'),
+    ('left', 'GT', 'LT'),
+    ('left', 'GTE', 'LTE'),
 )
 
 # Regular expression rules for simple tokens
@@ -81,6 +88,9 @@ t_PLUS    = r'\+'
 t_MINUS   = r'-'
 t_TIMES   = r'\*'
 t_DIVIDE  = r'/'
+t_MODULO = r'\%'
+t_EXP = r'\^'
+
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 t_LBRACKET = r'\['
@@ -105,6 +115,7 @@ t_WHILE = r'while~'
 t_INPUT = r'in~'
 t_PRINT = r'print~'
 t_ignore_COMMENT = r'\#.*'
+t_ignore_NEWLINE = r'\n.*'
 
 def t_TRUE(t):
 	r'true'
@@ -117,14 +128,15 @@ def t_FALSE(t):
 	return t
 
 # A regular expression rule with some action code
+
+def t_FLOAT(t):
+	r'\d+\.\d+'
+	t.value = float(t.value)
+	return t
+
 def t_INT(t):
 	r'\d+'
 	t.value = int(t.value)    
-	return t
-
-def t_FLOAT(t):
-	r'\d*\.\d+'
-	t.value = float(t.value)
 	return t
 
 def t_STRING(t):
@@ -163,12 +175,15 @@ def p_arithmetic(p):
           | var_assign
           | empty
     '''
-
+    #if interpret(p[1]) != None :
     print(interpret(p[1])) 
+
+#def p_if_statement(p)
 
 def p_var_assign(p):
     '''
-    var_assign : INTVAR EQUAL expression
+    var_assign : INTVAR EQUAL expression 
+    		   | FLOATVAR EQUAL expression
     '''
     p[0] = ('=',p[1],p[3])
 
@@ -190,7 +205,8 @@ def p_expression_int_float(p):
 
 def p_expression_var(p):
     '''
-    expression : INTVAR
+    expression : INTVAR 
+    		   | FLOATVAR
     
     '''
     p[0] = ('var',p[1])
@@ -203,41 +219,43 @@ def p_empty(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print("Syntax error in input!")
+    print("Syntax error in '%s'" %p)
+    #print(p.lexer.lineno)
 
-# try:
-# 	filename = input("Enter input file:")
-# 	i = open(filename, "r")
-# 	if filename[-3:] != ".md":
-# 		exit()
+try:
+	filename = input("Enter input file:")
+	i = open(filename, "r")
+	if filename[-3:] != ".md":
+		exit()
 
-# except:
-# 	print(">> Invalid file.")
-# 	exit()
-
-
-
+except:
+	print(">> Invalid file.")
+	exit()
 
 
 
-#data = i.read()
-#lexer.input(data)
-parser = yacc.yacc()
-
-
-while True:
-	try:
-		data = input('')
-	except EOFError:
-		break
-	parser.parse(data)
-
-lexer.input(data)	
-# Tokenize
+# lexer.input(i.read())
+# # Tokenize
 # while True:
 #     tok = lexer.token()
 #     if not tok: 
 #         break      # No more input
+#     print(tok)
 
-    #print(tok)
-#parser.parse(data)
+
+parser = yacc.yacc()
+for line in i:
+    data = line
+    parser.parse(data)
+
+
+# # Test it out
+# data = '''
+# 3 + 4 * 10
+#   + -20 *2
+# '''
+
+# # Give the lexer some input
+# lexer.input(data)
+
+
